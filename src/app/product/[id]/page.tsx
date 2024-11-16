@@ -9,6 +9,7 @@ import ModifierSection from "./components/ModifierSection";
 import { formatCurrency } from "@/utils/format";
 import { useCartStore } from "@/store/useCartStore";
 import { toast } from "react-hot-toast";
+import RetroButton from "@/components/Button";
 
 export default function ProductPage({
   params,
@@ -198,12 +199,9 @@ export default function ProductPage({
               )}
             </div>
 
-            <button
-              type="submit"
-              className="w-full bg-black text-white py-3 rounded-lg hover:bg-gray-800 transition-colors"
-            >
+            <RetroButton type="submit" className="w-full">
               Add to Cart
-            </button>
+            </RetroButton>
           </form>
         </div>
       </div>

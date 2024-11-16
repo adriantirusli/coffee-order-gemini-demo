@@ -39,7 +39,7 @@ export default function ModifierSection({
         {options.map((option) => (
           <label
             key={option.id}
-            className="flex items-center justify-between p-3 border rounded-lg hover:bg-gray-50 cursor-pointer"
+            className="flex items-center justify-between p-3 border-2 rounded-lg hover:bg-gray-50 cursor-pointer border-gray-900"
           >
             <div className="flex items-center gap-3">
               <input

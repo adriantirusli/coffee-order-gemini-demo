@@ -12,6 +12,9 @@ export default {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
+      backgroundColor: {
+        secondary: "#fbf4e9",
+      },
     },
   },
   plugins: [],

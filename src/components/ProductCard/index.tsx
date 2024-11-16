@@ -14,18 +14,18 @@ type ProductProps = {
 const ProductCard = ({ id, name, price, image, category }: ProductProps) => {
   return (
     <Link href={`/product/${id ?? ""}`}>
-      <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+      <div className="bg-secondary rounded-lg overflow-hidden hover:shadow-lg transition-shadow border-solid border-2 border-gray-900">
         <Image
           src={image ?? "/placeholder.jpg"}
           alt={name ?? "Product"}
           className="w-full h-full object-cover"
         />
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center border-t-2 border-gray-900 h-36 lg:h-full">
           <div className="p-4">
             <h3 className="text-lg font-semibold">
               {name ?? "Untitled Product"}
             </h3>
-            <p className="text-gray-600">{formatCurrency(price ?? 0)}</p>
+            <p>{formatCurrency(price ?? 0)}</p>
             <span className="text-sm text-gray-500 capitalize">
               {category ?? "Uncategorized"}
             </span>
