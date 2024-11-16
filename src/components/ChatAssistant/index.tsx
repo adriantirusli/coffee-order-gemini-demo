@@ -10,6 +10,8 @@ import { useCartStore } from "@/store/useCartStore";
 import { cn } from "@/utils/classNameMerger";
 import { DUMMY_PRODUCTS } from "@/app/data";
 import { parse } from "path";
+import CardModifier from "../CardModifier";
+import Link from "next/link";
 
 interface Message {
   role: "user" | "assistant";
@@ -28,6 +30,7 @@ interface OrderItem {
 
 export default function ChatAssistant() {
   const [isOpen, setIsOpen] = useState(false);
+  const [linkToCart, setLinkToCart] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "assistant",
@@ -37,7 +40,7 @@ export default function ChatAssistant() {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const { addItem } = useCartStore();
+  const { addItem, items, clearCart } = useCartStore();
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -81,12 +84,16 @@ export default function ChatAssistant() {
           )
         : data.message;
 
+      if (parsedContent.move1 === "sendOrder" || "confirmOrder") {
+        setLinkToCart(true);
+      }
       setMessages((prev) => [
         ...prev,
         { role: "assistant", content: parsedContent },
       ]);
 
       if (parsedContent.currentOrder?.length > 0) {
+        clearCart();
         parsedContent.currentOrder.forEach((item: OrderItem) => {
           const orderItem = {
             productId: Number(item.id),
@@ -155,21 +162,34 @@ export default function ChatAssistant() {
           </div>
 
           <div className="flex-1 overflow-y-auto p-4 h-[calc(600px-8rem)]">
-            {messages.map((message, index) => (
-              <div
-                key={index}
-                className={cn(
-                  "max-w-[80%] mb-4 p-3 rounded-lg",
-                  message.role === "user"
-                    ? "ml-auto bg-black text-white rounded-br-none"
-                    : "bg-gray-100 rounded-bl-none"
-                )}
-              >
-                {typeof message.content === "object"
-                  ? message.content.response
-                  : message.content}
-              </div>
-            ))}
+            {messages.map((message, index) => {
+              const isLastAssistantMessage =
+                message.role === "assistant" && index === messages.length - 1;
+
+              return (
+                <div
+                  key={index}
+                  className={cn(
+                    "max-w-[80%] mb-4 p-3 rounded-lg",
+                    message.role === "user"
+                      ? "ml-auto bg-black text-white rounded-br-none"
+                      : "bg-gray-100 rounded-bl-none"
+                  )}
+                >
+                  {typeof message.content === "object"
+                    ? message.content.response
+                    : message.content}
+                  {isLastAssistantMessage && linkToCart && items.length > 0 && (
+                    <Link
+                      href="/cart"
+                      className="block mt-2 text-blue-500 hover:underline"
+                    >
+                      Finish your order
+                    </Link>
+                  )}
+                </div>
+              );
+            })}
             {isLoading && (
               <div className="bg-gray-100 p-3 rounded-lg rounded-bl-none max-w-[80%] animate-pulse">
                 Thinking...
