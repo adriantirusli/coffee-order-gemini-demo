@@ -7,14 +7,14 @@ import Image from "next/image";
 export default function CardModifier({ qty = true, remove = true }) {
   const { items, removeItem, updateQuantity } = useCartStore();
 
-  const getProductImage = (productId: number) => {
-    return DUMMY_PRODUCTS.find((p) => p.id === productId)?.image;
+  const getProductImage = (productName: string) => {
+    return DUMMY_PRODUCTS.find((p) => p.name === productName)?.image;
   };
 
   return (
     <div className="grid grid-cols-1 gap-6">
       {items.map((item) => {
-        const productImage = getProductImage(item.productId);
+        const productImage = getProductImage(item.productName);
 
         return (
           <div

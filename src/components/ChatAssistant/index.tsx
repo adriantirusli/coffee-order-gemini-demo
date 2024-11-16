@@ -95,11 +95,11 @@ export default function ChatAssistant() {
       if (parsedContent.currentOrder?.length > 0) {
         clearCart();
         parsedContent.currentOrder.forEach((item: OrderItem) => {
+          const product = DUMMY_PRODUCTS.find((p) => p.name === item.item);
           const orderItem = {
             productId: Number(item.id),
             productName: item.item,
-            basePrice:
-              DUMMY_PRODUCTS.find((p) => p.id === Number(item.id))?.price || 0,
+            basePrice: product?.price ?? 0,
             quantity: 1,
             modifiers: {
               size: item.size || "Regular",
